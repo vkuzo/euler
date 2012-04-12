@@ -14,17 +14,20 @@ def fibSequence(N):
 	Iteratively returns terms in the Fibbonaci sequence as long as they are less than N
 	"""
 	#initialize
-	n1 = 1
-	n2 = 2
+	n1 = 0
+	n2 = 1
 	#return the first two values
-	yield 1
-	yield 2
+	yield n1
+	yield n2
 	#return the rest of the values up to the upper bound - 1
 	while n1 + n2 < N:
 		n1, n2 = n2, n1 + n2
 		yield n2
 
 def sumEvenTerms(seq):
+	"""
+	Returns sum of all even terms in seq
+	"""
 	return sum([x for x in seq if x % 2 == 0])
 
 class testProblem(unittest.TestCase):	
@@ -32,7 +35,7 @@ class testProblem(unittest.TestCase):
 		pass
 		
 	def testFibSequence(self):
-		self.assertEqual([1,2,3,5,8], list(fibSequence(9)))
+		self.assertEqual([0,1,1,2,3,5,8], list(fibSequence(9)))
 
 	def testSumEvenTerms(self):
 		self.assertEqual(12, sumEvenTerms([1,2,3,4,5,6,7]))
