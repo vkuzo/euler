@@ -4,7 +4,27 @@ The prime factors of 13195 are 5, 7, 13 and 29.
 What is the largest prime factor of the number 600851475143 ?
 """
 
+import math
 import unittest
+
+def isPrime(n):
+	"""
+	Returns True if n is prime, False otherwise
+	"""
+	if n <= 1: return False
+	elif n < 4: return True #2, 3
+	elif n % 2 == 0: return False
+	elif n < 9: return True #5, 7
+	elif n % 3 == 0: return False
+	else:
+		#make use of the fact that all primes > 5 have have the form 6k +- 1
+		r = math.floor(math.sqrt(n))
+		f = 5
+		while f <= r:
+			if n % f == 0: return False
+			if n % (f + 2) == 0: return False
+			f += 6
+		return True
 
 def getNextPrime(primesList):
 	"""
@@ -14,18 +34,13 @@ def getNextPrime(primesList):
 	keepGoing = True
 	while keepGoing:
 		n += 2 #assume that the last known prime number is odd (ignore 2)
-		foundFactors = False
-		for x in primesList:
-			if n % x == 0:
-				foundFactors = True
-				break
-		if not foundFactors:
-			keepGoing = False
-	return n
-		
+		if isPrime(n):
+			return n
+
 def factor(N):
 	"""
 	Returns a list of N factored into primes
+	Multiple prime factors are omitted
 	"""
 	#initialize
 	primes = [2,3]
@@ -48,6 +63,12 @@ def factor(N):
 class testProblem(unittest.TestCase):	
 	def setUp(self):
 		pass
+				
+	def testIsPrime(self):
+		self.assertEquals(True, isPrime(17))
+		self.assertEquals(True, isPrime(23))
+		self.assertEquals(False, isPrime(15))		
+		self.assertEquals(False, isPrime(25))		
 				
 	def testGetNextPrime(self):
 		self.assertEqual(19, getNextPrime([2,3,5,7,11,13,17]))
